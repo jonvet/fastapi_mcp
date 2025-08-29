@@ -57,11 +57,11 @@ def resolve_schema_references(
     # Recursively resolve references in all dictionary values
     for key, value in schema_part.items():
         if isinstance(value, dict):
-            schema_part[key] = resolve_schema_references(value, reference_schema, seen)
+            schema_part[key] = resolve_schema_references(value, reference_schema, seen.copy())
         elif isinstance(value, list):
             # Only process list items that are dictionaries since only they can contain refs
             schema_part[key] = [
-                resolve_schema_references(item, reference_schema, seen) if isinstance(item, dict) else item
+                resolve_schema_references(item, reference_schema, seen.copy()) if isinstance(item, dict) else item
                 for item in value
             ]
 
